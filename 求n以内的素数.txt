@@ -1,0 +1,47 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<algorithm>
+
+using namespace std;
+const int maxn=1000000;
+bool flag[maxn];
+int prime[maxn];
+int get_prime()
+{
+	for (int i = 2; i <= maxn; i++)
+	{
+		if (!prime[i])
+		{
+			prime[++prime[0]] = i;
+			flag[i] = i;
+		}
+		for (int j = 1; j <= prime[0] && prime[j] <= maxn / i; j++)
+		{
+			prime[prime[j] * i] = 1;
+			if (i%prime[j] == 0)
+				break;
+		}
+	}
+	return prime[0];
+}
+
+
+
+
+
+int main()
+{
+	get_prime();
+	int n,k;
+	while (scanf("%d", &n) != EOF)
+	{
+		k = lower_bound(prime + 1, prime[0] + prime + 1, n) - prime;
+		for (int j = 1; j < k; j++)
+			printf("%d ", prime[j]);
+		printf("\n");
+	}
+	return 0;
+}
+
+
+
